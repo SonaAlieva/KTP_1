@@ -1,0 +1,44 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalTime;
+import java.util.Scanner;
+import java.io.FileWriter;
+
+public class AgeValidator {
+    public static void log(Exception e) {
+        try (FileWriter writer = new FileWriter("log.txt", true)) {
+            String timestamp = LocalTime.now().toString();
+            writer.write(timestamp + " - " + e.getMessage() + "\n");
+        } catch (IOException ioEx) {
+            System.out.println("Error while logging: " + ioEx.getMessage());
+        }
+    }
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введите ваш возраст: ");
+
+        try {
+            int age = scanner.nextInt();
+            checkAge(age);
+            System.out.println("Возраст принят: " + age);
+
+        } catch (CustomAgeException e) {
+            System.err.println("Произошла ошибка: " + e.getMessage());
+            log(e);
+        } catch (Exception e) {
+            System.err.println("Ошибка: введите корректное число.");
+            log(e);
+        } finally {
+            scanner.close();
+        }
+    }
+
+    public static void checkAge(int age) throws CustomAgeException {
+        if (age < 0 || age > 120) {
+            throw new CustomAgeException("Недопустимый возраст: " + age +
+                    ". Возраст должен быть в диапазоне от 0 до 120 лет.");
+
+        }
+    }
+
+}
