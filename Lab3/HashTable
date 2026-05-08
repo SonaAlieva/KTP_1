@@ -1,0 +1,123 @@
+import java.util.LinkedList;
+import java.util.Iterator;
+
+public class HashTable<K, V> {
+
+    private int capacity = 20;
+
+    private LinkedList<Entry<K, V>>[] table;
+
+    private int size = 0;
+
+    public HashTable() {
+        table = new LinkedList[capacity];
+    }
+
+    private int hash(K key) {
+        return Math.abs(key.hashCode()) % capacity;
+    }
+
+
+    public void put(K key, V value) {
+        int index = hash(key);
+
+        if (table[index] == null) {
+            table[index] = new LinkedList<>();
+        }
+
+        for (Entry<K, V> entry : table[index]) {
+            if (entry.getKey().equals(key)) {
+                entry.setValue(value);
+                return;
+            }
+        }
+
+
+        table[index].add(new Entry<>(key, value));
+        size++;
+    }
+
+
+    public V get(K key) {
+        int index = hash(key);
+
+        if (table[index] != null) {
+            for (Entry<K, V> entry : table[index]) {
+                if (entry.getKey().equals(key)) {
+                    return entry.getValue();
+                }
+            }
+        }
+
+        return null;
+    }
+    
+    public void remove(K key) {
+        int index = hash(key);
+
+        if (table[index] != null) {
+            Iterator<Entry<K, V>> iterator = table[index].iterator();
+
+            while (iterator.hasNext()) {
+                Entry<K, V> entry = iterator.next();
+
+                if (entry.getKey().equals(key)) {
+                    iterator.remove();
+                    size--;
+                    return;
+                }
+            }
+        }
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    static class Entry<K, V> {
+        private K key;
+        private V value;
+
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V value) {
+            this.value = value;
+        }
+    }
+
+
+    public static void main(String[] args) {
+        HashTable<String, Integer> map = new HashTable<>();
+
+        map.put("apple", 5);
+        map.put("banana", 10);
+        map.put("orange", 7);
+
+        System.out.println("apple: " + map.get("apple"));
+        System.out.println("banana: " + map.get("banana"));
+
+        map.put("apple", 20);
+        System.out.println("apple: " + map.get("apple"));
+
+        map.remove("banana");
+        System.out.println("banana: " + map.get("banana"));
+
+        System.out.println("Size: " + map.size());
+        System.out.println("Is empty: " + map.isEmpty());
+    }
+}
