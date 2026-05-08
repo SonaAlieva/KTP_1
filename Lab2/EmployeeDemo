@@ -1,0 +1,358 @@
+import java.util.ArrayList;
+import java.util.List;
+
+
+abstract class Employee {
+    
+    protected String name;
+    protected int id;
+    protected double baseSalary;
+    
+    
+    private static int totalEmployees = 0;
+    
+    
+    public Employee() {
+        this.name = "Unknown";
+        this.id = 0;
+        this.baseSalary = 0.0;
+        totalEmployees++;
+        System.out.println("Создан сотрудник (конструктор по умолчанию)");
+    }
+    
+    
+    public Employee(String name, int id, double baseSalary) {
+        this.name = name;
+        this.id = id;
+        this.baseSalary = baseSalary;
+        totalEmployees++;
+        System.out.println("Создан сотрудник: " + name);
+    }
+    
+    
+    public String getName() {
+        return name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public double getBaseSalary() {
+        return baseSalary;
+    }
+    
+    public void setBaseSalary(double baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+    
+    public static int getTotalEmployees() {
+        return totalEmployees;
+    }
+    
+    
+    public abstract double calculateSalary();
+    
+    // Метод для вывода информации о сотруднике
+    public void displayInfo() {
+        System.out.println("ID: " + id + ", Имя: " + name + 
+                          ", Базовая зарплата: " + baseSalary);
+    }
+    
+    
+    @Override
+    public String toString() {
+        return "Сотрудник [id=" + id + ", name=" + name + "]";
+    }
+}
+
+
+class Administrator extends Employee {
+    private String department;
+    private int managedEmployees;
+    private double bonusPercentage;
+    
+    
+    public Administrator() {
+        super();
+        this.department = "Не указан";
+        this.managedEmployees = 0;
+        this.bonusPercentage = 0.0;
+        System.out.println("Создан администратор (конструктор по умолчанию)");
+    }
+    
+    
+    public Administrator(String name, int id, double baseSalary, 
+                        String department, int managedEmployees, double bonusPercentage) {
+        super(name, id, baseSalary);
+        this.department = department;
+        this.managedEmployees = managedEmployees;
+        this.bonusPercentage = bonusPercentage;
+        System.out.println("Создан администратор: " + name);
+    }
+    
+   
+    public String getDepartment() {
+        return department;
+    }
+    
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+    
+    public int getManagedEmployees() {
+        return managedEmployees;
+    }
+    
+    public void setManagedEmployees(int managedEmployees) {
+        this.managedEmployees = managedEmployees;
+    }
+    
+    public double getBonusPercentage() {
+        return bonusPercentage;
+    }
+    
+    public void setBonusPercentage(double bonusPercentage) {
+        this.bonusPercentage = bonusPercentage;
+    }
+    
+    @Override
+    public double calculateSalary() {
+        return baseSalary + (baseSalary * bonusPercentage / 100) + (managedEmployees * 1000);
+    }
+    
+    @Override
+    public void displayInfo() {
+        super.displayInfo();
+        System.out.println("Должность: Администратор, Отдел: " + department + 
+                          ", Подчиненных: " + managedEmployees + 
+                          ", Бонус: " + bonusPercentage + "%");
+    }
+    
+    public void manageTeam() {
+        System.out.println(name + " управляет командой из " + managedEmployees + " человек");
+    }
+}
+
+class Programmer extends Employee {
+    private String programmingLanguage;
+    private int experienceYears;
+    private String projectName;
+    
+    public Programmer() {
+        super();
+        this.programmingLanguage = "Не указан";
+        this.experienceYears = 0;
+        this.projectName = "Не указан";
+        System.out.println("Создан программист (конструктор по умолчанию)");
+    }
+    
+    public Programmer(String name, int id, double baseSalary, 
+                     String programmingLanguage, int experienceYears, String projectName) {
+        super(name, id, baseSalary);
+        this.programmingLanguage = programmingLanguage;
+        this.experienceYears = experienceYears;
+        this.projectName = projectName;
+        System.out.println("Создан программист: " + name);
+    }
+    
+    public String getProgrammingLanguage() {
+        return programmingLanguage;
+    }
+    
+    public void setProgrammingLanguage(String programmingLanguage) {
+        this.programmingLanguage = programmingLanguage;
+    }
+    
+    public int getExperienceYears() {
+        return experienceYears;
+    }
+    
+    public void setExperienceYears(int experienceYears) {
+        this.experienceYears = experienceYears;
+    }
+    
+    public String getProjectName() {
+        return projectName;
+    }
+    
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+    
+    @Override
+    public double calculateSalary() {
+        return baseSalary + (experienceYears * 5000) + 
+               (programmingLanguage.equals("Java") ? 10000 : 5000);
+    }
+    
+    @Override
+    public void displayInfo() {
+        super.displayInfo();
+        System.out.println("Должность: Программист, Язык: " + programmingLanguage + 
+                          ", Опыт: " + experienceYears + " лет, Проект: " + projectName);
+    }
+    
+    public void writeCode() {
+        System.out.println(name + " пишет код на " + programmingLanguage);
+    }
+}
+
+class Manager extends Administrator {
+    private String teamName;
+    private int projectCount;
+    private double performanceRating;
+    
+
+    public Manager() {
+        super();
+        this.teamName = "Не указан";
+        this.projectCount = 0;
+        this.performanceRating = 0.0;
+        System.out.println("Создан менеджер (конструктор по умолчанию)");
+    }
+    
+   
+    public Manager(String name, int id, double baseSalary, String department, 
+                  int managedEmployees, double bonusPercentage, 
+                  String teamName, int projectCount, double performanceRating) {
+        super(name, id, baseSalary, department, managedEmployees, bonusPercentage);
+        this.teamName = teamName;
+        this.projectCount = projectCount;
+        this.performanceRating = performanceRating;
+        System.out.println("Создан менеджер: " + name);
+    }
+    
+    
+    public String getTeamName() {
+        return teamName;
+    }
+    
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
+    
+    public int getProjectCount() {
+        return projectCount;
+    }
+    
+    public void setProjectCount(int projectCount) {
+        this.projectCount = projectCount;
+    }
+    
+    public double getPerformanceRating() {
+        return performanceRating;
+    }
+    
+    public void setPerformanceRating(double performanceRating) {
+        this.performanceRating = performanceRating;
+    }
+    
+    
+    @Override
+    public double calculateSalary() {
+        return super.calculateSalary() + (projectCount * 2000) + (performanceRating * 1000);
+    }
+    
+   
+    @Override
+    public void displayInfo() {
+        super.displayInfo();
+        System.out.println("Должность: Менеджер, Команда: " + teamName + 
+                          ", Проектов: " + projectCount + 
+                          ", Рейтинг: " + performanceRating);
+    }
+    
+    
+    public void conductMeeting() {
+        System.out.println(name + " проводит совещание с командой " + teamName);
+    }
+    
+    public void conductMeeting(String topic) {
+        System.out.println(name + " проводит совещание на тему: " + topic);
+    }
+}
+
+
+public class EmployeeDemo {
+    public static void main(String[] args) {
+        System.out.println("=== Демонстрация иерархии классов Сотрудник ===\n");
+        
+       
+        System.out.println("--- Создание администратора ---");
+        Administrator admin1 = new Administrator();
+        admin1.setName("Анна Петрова");
+        admin1.setId(101);
+        admin1.setBaseSalary(50000);
+        admin1.setDepartment("IT");
+        admin1.setManagedEmployees(5);
+        admin1.setBonusPercentage(10);
+        
+        System.out.println("\n--- Создание программиста ---");
+        Programmer prog1 = new Programmer("Иван Сидоров", 102, 60000, 
+                                         "Java", 3, "Project Alpha");
+        
+        System.out.println("\n--- Создание менеджера ---");
+        Manager manager1 = new Manager("Петр Иванов", 103, 70000, "Разработка", 
+                                      8, 15, "Team A", 3, 4.5);
+        
+        System.out.println("\n--- Создание менеджера (конструктор по умолчанию) ---");
+        Manager manager2 = new Manager();
+        manager2.setName("Елена Смирнова");
+        manager2.setId(104);
+        manager2.setBaseSalary(65000);
+        manager2.setDepartment("Маркетинг");
+        manager2.setManagedEmployees(4);
+        manager2.setBonusPercentage(12);
+        manager2.setTeamName("Marketing Team");
+        manager2.setProjectCount(2);
+        manager2.setPerformanceRating(4.2);
+        
+        
+        System.out.println("\n=== Статистика ===");
+        System.out.println("Всего создано сотрудников: " + Employee.getTotalEmployees());
+        
+       
+        System.out.println("\n=== Демонстрация полиморфизма ===");
+        List<Employee> employees = new ArrayList<>();
+        employees.add(admin1);
+        employees.add(prog1);
+        employees.add(manager1);
+        employees.add(manager2);
+        
+        for (Employee emp : employees) {
+            System.out.println("\n--- Информация о сотруднике ---");
+            emp.displayInfo();
+            System.out.println("Итоговая зарплата: " + emp.calculateSalary());
+        }
+        
+        
+        System.out.println("\n=== Специфические методы ===");
+        admin1.manageTeam();
+        prog1.writeCode();
+        manager1.conductMeeting();
+        manager1.conductMeeting("Планирование спринта"); // Перегруженный метод
+        
+      
+        System.out.println("\n=== Демонстрация геттеров/сеттеров ===");
+        System.out.println("Имя программиста: " + prog1.getName());
+        prog1.setProgrammingLanguage("Python");
+        System.out.println("Новый язык программирования: " + prog1.getProgrammingLanguage());
+        
+      
+        System.out.println("\n=== toString() метод ===");
+        System.out.println(prog1.toString());
+        
+        
+        System.out.println("\n=== Финальная статистика ===");
+        System.out.println("Общее количество сотрудников: " + Employee.getTotalEmployees());
+    }
+}
