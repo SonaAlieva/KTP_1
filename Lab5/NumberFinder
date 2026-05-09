@@ -1,0 +1,20 @@
+import java.util.regex.*;
+
+public class NumberFinder {
+    public static void main(String[] args){
+        try {
+            String text = "fhf8.22h ffh5h eiiie dj55 44.4";
+
+            Pattern pattern = Pattern.compile("\\d+(\\.\\d+)?");
+            Matcher matcher = pattern.matcher(text);
+
+            while (matcher.find()){
+                System.out.println(matcher.group());
+            }
+        } catch (Exception e){
+            System.out.println("Ошибка:" + e.getMessage());
+        }
+
+
+    }
+}
