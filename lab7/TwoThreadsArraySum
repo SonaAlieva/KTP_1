@@ -1,0 +1,64 @@
+public class TwoThreadsArraySum {
+
+    static class SumThread extends Thread {
+        private final int[] array;
+        private final int start;
+        private final int end;
+        private long partialSum = 0;
+
+        public SumThread(int[] array, int start, int end) {
+            this.array = array;
+            this.start = start;
+            this.end = end;
+        }
+
+        @Override
+        public void run() {
+            for (int i = start; i < end; i++) {
+                partialSum += array[i];
+            }
+        }
+
+
+        public long getPartialSum() {
+            return partialSum;
+        }
+    }
+
+    public static void main(String[] args) {
+
+        int arraySize = 10000;
+        int[] array = new int[arraySize];
+        for (int i = 0; i < arraySize; i++) {
+            array[i] = i + 1;
+        }
+
+        int mid = array.length / 2;
+
+        SumThread thread1 = new SumThread(array, 0, mid);
+
+        SumThread thread2 = new SumThread(array, mid, array.length);
+
+        thread1.start();
+        thread2.start();
+
+        try {
+
+            thread1.join();
+            thread2.join();
+        } catch (InterruptedException e) {
+            System.err.println("Главный поток был прерван: " + e.getMessage());
+        }
+
+
+        long totalSum = thread1.getPartialSum() + thread2.getPartialSum();
+
+
+        System.out.println("Сумма первой половины: " + thread1.getPartialSum());
+        System.out.println("Сумма второй половины: " + thread2.getPartialSum());
+        System.out.println("Общая сумма: " + totalSum);
+
+        long expectedSum = (long) arraySize * (arraySize + 1) / 2;
+        System.out.println("Ожидаемая сумма: " + expectedSum);
+    }
+}
